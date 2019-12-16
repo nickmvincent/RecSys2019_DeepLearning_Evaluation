@@ -17,11 +17,13 @@ from Data_manager.load_and_save_data import save_data_dict, load_data_dict
 
 class PinterestICCVReader(object):
 
-    def __init__(self):
+    def __init__(self, subdir=False):
         super(PinterestICCVReader, self).__init__()
 
 
         pre_splitted_path = "Data_manager_split_datasets/PinterestICCV/SIGIR/CMN_our_interface/"
+        if subdir:
+            pre_splitted_path += subdir
 
         pre_splitted_filename = "splitted_data"
 
@@ -51,7 +53,11 @@ class PinterestICCVReader(object):
             #
             # self.URM_train, self.URM_validation, self.URM_test, self.URM_negative = split_train_validation_test_negative_leave_one_out_user_wise(URM_all, negative_items_per_positive=100)
 
-            dataset = Dataset_NeuralCollaborativeFiltering("Conferences/WWW/NeuMF_github/Data/pinterest-20")
+            path = 'Conferences/WWW/NeuMF_github/Data/'
+            if subdir:
+                path += subdir +'/'
+            path += 'pinterest-20'
+            dataset = Dataset_NeuralCollaborativeFiltering(path)
 
             self.URM_train_original, self.URM_test, self.URM_test_negative = dataset.URM_train, dataset.URM_test, dataset.URM_test_negative
 
