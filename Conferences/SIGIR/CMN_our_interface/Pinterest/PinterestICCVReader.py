@@ -23,7 +23,7 @@ class PinterestICCVReader(object):
 
         pre_splitted_path = "Data_manager_split_datasets/PinterestICCV/SIGIR/CMN_our_interface/"
         if subdir:
-            pre_splitted_path += subdir
+            pre_splitted_path += subdir + '/'
 
         pre_splitted_filename = "splitted_data"
 
@@ -101,6 +101,8 @@ class Dataset_NeuralCollaborativeFiltering(object):
         assert len(testRatings) == len(testNegatives)
 
         self.num_users, self.num_items = trainMatrix.shape
+        print(path)
+        print('#u', self.num_users, '#i', self.num_items)
 
         from Base.Recommender_utils import reshapeSparse
 
@@ -115,6 +117,7 @@ class Dataset_NeuralCollaborativeFiltering(object):
         self.URM_test = reshapeSparse(self.URM_test, shape)
 
 
+        print('Shape', shape)
         URM_test_negatives_builder = IncrementalSparseMatrix(n_rows=shape[0], n_cols=shape[1])
 
         for user_index in range(len(testNegatives)):
@@ -172,6 +175,9 @@ class Dataset_NeuralCollaborativeFiltering(object):
                 num_users = max(num_users, u)
                 num_items = max(num_items, i)
                 line = f.readline()
+
+        # TODO: fix this hardcoded
+        num_items = 9916
         # Construct matrix
         mat = sps.dok_matrix((num_users+1, num_items+1), dtype=np.float32)
         with open(filename, "r") as f:
